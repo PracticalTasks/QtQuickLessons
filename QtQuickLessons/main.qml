@@ -9,18 +9,66 @@ Window {
     visible: true
     title: qsTr("Вычесление площади треугольника")
     color: "#e5ecef"
+
+    //Получаемый ввод из TextField - ов
     property string strA
     property string strB
     property string strC
+    //Площадь треугольника
     property string strP
 
+    property string strX
+    property string strY
+
+
+    function getValues(str){
+        var idxDot
+        idxDot = str.indexOf(',')
+        strX = str.substring(0, idxDot)
+        strY = str.substring(idxDot + 2, str.lenght)
+    }
+
+    function calculateSide(){
+        var isCoordX = parseInt(strX, 10)
+        var isCoordY = parseInt(strY, 10)
+        var calculateRes
+
+        if(isCoordX > isCoordY){
+            if((isCoordX - isCoordY) > 0){
+                        return isCoordX - isCoordY
+                    }
+            else{
+                calculateRes = Math.pow(isCoordY, 2)
+                return Math.sqrt(calculateRes) + isCoordX
+            }
+        }
+        else if(isCoordX < isCoordY){
+            if((isCoordY - isCoordX) > 0){
+                return isCoordY - isCoordX
+            }
+            else{
+                calculateRes = Math.pow(isCoordX, 2)
+                return Math.sqrt(calculateRes) + isCoordY
+            }
+        }
+
+        return 0
+}
+
     function areaCalculation(){
-    var A, B, C, p
-    A = Number.fromLocaleString(strA)
-    B = Number.fromLocaleString(strB)
-    C = Number.fromLocaleString(strC)
-    p = (A + B + C) / 2
-    strP = Math.sqrt((p * (p - A)) * (p - B) * (p - C))
+        var A, B, C, p
+
+        getValues(strA)
+        A = calculateSide()
+
+        getValues(strB)
+        B = calculateSide()
+
+        getValues(strC)
+        C = calculateSide()
+
+        p = (A + B + C) / 2
+        strP = Math.sqrt((p * (p - A)) * (p - B) * (p - C))
 }
 
     RowLayout{
@@ -32,7 +80,7 @@ Window {
                 id: sideA
                 anchors.left: parent.left
                 anchors.top: parent.bottom
-                placeholderText: qsTr("Сторона A")
+                placeholderText: qsTr("x, y")
             }
         }
         Label{
@@ -42,7 +90,7 @@ Window {
                 id: sideB
                 anchors.left: parent.left
                 anchors.top: parent.bottom
-                placeholderText: qsTr("Сторона B")
+                placeholderText: qsTr("x, y")
             }
         }
         Label{
@@ -52,7 +100,7 @@ Window {
                 id: sideC
                 anchors.left: parent.left
                 anchors.top: parent.bottom
-                placeholderText: qsTr("Сторона C")
+                placeholderText: qsTr("x, y")
             }
         }
     }
@@ -76,4 +124,3 @@ Window {
         }
     }
 }
-
